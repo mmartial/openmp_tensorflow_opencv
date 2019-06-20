@@ -1,22 +1,22 @@
-ARG OTO_TENSORFLOW_TAG
-FROM tensorflow/tensorflow:$OTO_TENSORFLOW_TAG
+ARG CTO_TENSORFLOW_TAG
+FROM tensorflow/tensorflow:$CTO_TENSORFLOW_TAG
 #
 # Manual Build using (replace <...> with valid values): 
 #  docker build \
-#    --build-arg OTO_TENSORFLOW_TAG=<tensorflow GPU tag> \
-#    --build-arg OTO_OPENCV_VERSION=<offical release> \
-#    --build-arg OTO_NUMPROC=<concurrent number of make ran for compilations> \
-#    --tag="openmp_tensorflow_opencv:<should follow the TENSORFLOW_OPENCV-RELEASE pattern>" \
+#    --build-arg CTO_TENSORFLOW_TAG=<tensorflow GPU tag> \
+#    --build-arg CTO_OPENCV_VERSION=<offical release> \
+#    --build-arg CTO_NUMPROC=<concurrent number of make ran for compilations> \
+#    --tag="tensorflow_opencv:<should follow the TENSORFLOW_OPENCV-RELEASE pattern>" \
 #    -f Dockerfile.main \
 #    .
 #
 # Recommended build: follow the options offered by the Makefile
 #
-# using: OTO_TAG=<valid tag, use docker images to list available tags> ./runDocker.sh
+# using: CTO_TAG=<valid tag, use docker images to list available tags> ./runDocker.sh
 
 
-ARG OTO_OPENCV_VERSION
-ARG OTO_NUMPROC=1
+ARG CTO_OPENCV_VERSION
+ARG CTO_NUMPROC=1
 
 # Install system packages
 ENV DEBIAN_FRONTEND noninteractive
@@ -45,14 +45,14 @@ RUN wget -q -O /tmp/get-pip.py --no-check-certificate https://bootstrap.pypa.io/
 # Download & build OpenCV
 RUN mkdir -p /usr/local/src \
   && cd /usr/local/src \
-  && wget -q --no-check-certificate https://github.com/opencv/opencv/archive/${OTO_OPENCV_VERSION}.tar.gz \
-  && tar xfz ${OTO_OPENCV_VERSION}.tar.gz \
-  && mv opencv-${OTO_OPENCV_VERSION} opencv \
-  && rm ${OTO_OPENCV_VERSION}.tar.gz \
-  && wget -q --no-check-certificate https://github.com/opencv/opencv_contrib/archive/${OTO_OPENCV_VERSION}.tar.gz \
-  && tar xfz ${OTO_OPENCV_VERSION}.tar.gz \
-  && mv opencv_contrib-${OTO_OPENCV_VERSION} opencv_contrib \
-  && rm ${OTO_OPENCV_VERSION}.tar.gz
+  && wget -q --no-check-certificate https://github.com/opencv/opencv/archive/${CTO_OPENCV_VERSION}.tar.gz \
+  && tar xfz ${CTO_OPENCV_VERSION}.tar.gz \
+  && mv opencv-${CTO_OPENCV_VERSION} opencv \
+  && rm ${CTO_OPENCV_VERSION}.tar.gz \
+  && wget -q --no-check-certificate https://github.com/opencv/opencv_contrib/archive/${CTO_OPENCV_VERSION}.tar.gz \
+  && tar xfz ${CTO_OPENCV_VERSION}.tar.gz \
+  && mv opencv_contrib-${CTO_OPENCV_VERSION} opencv_contrib \
+  && rm ${CTO_OPENCV_VERSION}.tar.gz
 RUN mkdir -p /usr/local/src/opencv/build \
   && cd /usr/local/src/opencv/build \
   && cmake \
@@ -68,7 +68,7 @@ RUN mkdir -p /usr/local/src/opencv/build \
     -DWITH_GDAL=ON -DWITH_XINE=ON -DWITH_GTK=ON \
     -DWITH_OPENMP=ON \
     .. \
-  && make -j${OTO_NUMPROC} install \
+  && make -j${CTO_NUMPROC} install \
   && rm -rf /usr/local/src/opencv
 
 # Add dataframe display widget
