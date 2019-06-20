@@ -1,4 +1,4 @@
-F# DockerFile with TensorFlow and OpenCV
+# DockerFile with TensorFlow and OpenCV
 
 Install an OpenMP optimized version of TensorFlow and OpenCV. Also install, Jupyter, Keras, numpy, pandas and X11 support.
 
